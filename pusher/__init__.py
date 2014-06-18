@@ -16,7 +16,7 @@ key     = None
 secret  = None
 
 channel_name_re = re.compile('^[-a-zA-Z0-9_=@,.;]+$')
-app_id_re       = re.compile('^[0-9]+$')
+app_id_re       = re.compile('^[-a-z0-9]+$')
 
 def url2options(url):
     assert url.startswith('http://'), "invalid URL"
