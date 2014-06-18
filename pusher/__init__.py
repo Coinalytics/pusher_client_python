@@ -79,9 +79,12 @@ class Channel(object):
 
     def signed_query(self, event, json_data, socket_id):
         query_string = self.compose_querystring(event, json_data, socket_id)
-        string_to_sign = "POST\n%s\n%s" % (self.path, query_string)
-        signature = hmac.new(self.pusher.secret, string_to_sign, hashlib.sha256).hexdigest()
-        return "%s&auth_signature=%s" % (query_string, signature)
+        if self.pusher.secret is None:
+            return "%s" % query_string
+        else:
+            string_to_sign = "POST\n%s\n%s" % (self.path, query_string)
+            signature = hmac.new(self.pusher.secret, string_to_sign, hashlib.sha256).hexdigest()
+            return "%s&auth_signature=%s" % (query_string, signature)
 
     def compose_querystring(self, event, json_data, socket_id):
         hasher = hashlib.md5()
